@@ -6,11 +6,11 @@ import com.example.bankapp.dao.repository.UserRepository;
 import com.example.bankapp.dto.request.AccountRequest;
 import com.example.bankapp.dto.response.AccountResponse;
 import com.example.bankapp.enums.AccountStatus;
+import com.example.bankapp.exception.AlreadyExistsException;
 import com.example.bankapp.exception.InsufficientBalanceException;
 import com.example.bankapp.exception.NotFoundException;
 import com.example.bankapp.service.abstraction.AccountService;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class AccountImpl implements AccountService {
-    com.example.bankapp.dao.reposiroty.AccountRepository accountRepository;
+    com.example.bankapp.dao.repository.AccountRepository accountRepository;
     UserRepository userRepository;
 
 
@@ -40,13 +40,18 @@ public class AccountImpl implements AccountService {
               return   new NotFoundException("Id tapilmai");
         });
 
+
+        if(accountRepository.findByUserId(request.getUserId()).isPresent()){
+            log.error("Bu istifadeci artiq movcuddur");
+            throw  new AlreadyExistsException("Bu account yaradilib");
+        }
         AccountEntity accountEntity=AccountEntity.builder()
+
                 .balance(request.getBalance())
                 .status(AccountStatus.ACTIVE)
                 .createdAt(LocalDateTime.now())
                 .userId(request.getUserId())
                 .build();
-
         accountRepository.save(accountEntity);
 
 
@@ -60,7 +65,6 @@ public class AccountImpl implements AccountService {
                 .status(accountEntity.getStatus())
                 .userId(accountEntity.getUserId())
                 .build();
-
     }
 
     @Override

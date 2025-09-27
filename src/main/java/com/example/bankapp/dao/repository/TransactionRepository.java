@@ -1,4 +1,4 @@
-//package com.example.bankapp.dao.reposiroty;
+//package com.example.bankapp.dao.repository;
 //
 //import com.example.bankapp.dao.entity.TransactionEntity;
 //import org.springframework.data.jpa.repository.JpaRepository;
