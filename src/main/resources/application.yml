@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  liquibase:
+    change-log: classpath:db/changelog/01_bank_app.yml
+    enabled: false
+
+  jpa:
+    hibernate:
+      ddl-auto: update
