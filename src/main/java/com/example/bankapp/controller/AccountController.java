@@ -5,6 +5,7 @@ import com.example.bankapp.dto.request.AccountRequest;
 import com.example.bankapp.dto.request.TransferRequest;
 import com.example.bankapp.dto.response.AccountResponse;
 import com.example.bankapp.service.abstraction.AccountService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class AccountController {
     AccountService accountService;
 
     @PostMapping("create")
-    AccountResponse create(@RequestBody AccountRequest request){
+    AccountResponse create(@RequestBody @Valid AccountRequest request){
         return accountService.create(request);
     }
 
@@ -37,7 +38,7 @@ public class AccountController {
     }
 
     @PostMapping("transfer")
-    void transfer(@RequestBody TransferRequest transferRequest){
+    void transfer(@RequestBody @Valid TransferRequest transferRequest){
         accountService.transfer(transferRequest);
     }
 

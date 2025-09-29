@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class AccountRequest {
 
 
-    @NotNull(message = "Balans bos ola bilmez")
+    @NotNull(message = "Balans bos ve menfi(-) ola bilmez")
     BigDecimal balance;
 
     @NotNull(message = "User id cannot be null")
