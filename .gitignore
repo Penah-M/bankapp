@@ -1,4 +1,4 @@
-src/main/resources/.env
+src/main/resources/
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+# env
+.env

@@ -2,6 +2,7 @@ package com.example.bankapp.controller;
 
 
 import com.example.bankapp.dto.request.AccountRequest;
+import com.example.bankapp.dto.request.TransferRequest;
 import com.example.bankapp.dto.response.AccountResponse;
 import com.example.bankapp.service.abstraction.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,17 @@ public class AccountController {
     void withdraw(@PathVariable Long accountId, @RequestParam BigDecimal withdraw ){
         accountService.withdraw(accountId,withdraw);
     }
+
+    @PostMapping("transfer")
+    void transfer(@RequestBody TransferRequest transferRequest){
+        accountService.transfer(transferRequest);
+    }
+
+
+    @GetMapping("{accountId}show")
+    public BigDecimal show(@PathVariable Long accountId) {
+        return accountService.show(accountId);
+    }
+
 
 }
