@@ -1,6 +1,8 @@
 package com.example.bankapp.dto.request;
 
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,8 +15,14 @@ import java.math.BigDecimal;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
 public class TransferRequest {
-    private Long fromId;
-    private Long toId;
-    private BigDecimal amount;
+
+    @Positive(message = "fromId musbet reqem olmalidir")
+    Long fromId;
+
+    @Positive(message = "toId musbet reqem olmalidir")
+    Long toId;
+
+    @NotNull(message = "Bos ve menfi(-) ola bilmez")
+    BigDecimal amount;
 }
 

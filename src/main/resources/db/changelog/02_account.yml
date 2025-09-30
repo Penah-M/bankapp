@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 1758952914-2
+      id: 2
       author: Penah
       changes:
         - createTable:

@@ -30,6 +30,8 @@ public class AccountImpl implements AccountService {
     AccountRepository accountRepository;
     UserRepository userRepository;
 
+    TransactionImpl transaction;
+
 
     @Override
     public AccountResponse create(AccountRequest request) {
@@ -76,6 +78,7 @@ public class AccountImpl implements AccountService {
             log.error("Bu id: {} movcud deyil", accountId);
             return new NotFoundException("Bu id aid hesab tapilmadi");
         });
+        transaction.depositLog(accountId,deposit);
 
         accountEntity.setBalance(accountEntity.getBalance().add(deposit));
         accountEntity.setUpdatedAt(LocalDateTime.now());
@@ -98,8 +101,9 @@ public class AccountImpl implements AccountService {
             log.error("Balansinizda kifayet qeder vesait yoxdur:{}", accountEntity.getBalance());
             throw new InsufficientBalanceException("Kifayet qeder vesait yoxdur");
         }
+        transaction.withdrawLog(userId,withdraw);
 
-        log.info("Witdraw emliyyati icra oldu...");
+        log.info("WitHdraw emeliyyati icra oldu...");
         accountEntity.setBalance(accountEntity.getBalance().subtract(withdraw));
         accountEntity.setUpdatedAt(LocalDateTime.now());
         accountRepository.save(accountEntity);
@@ -110,11 +114,10 @@ public class AccountImpl implements AccountService {
     @Override
     @Transactional
     public void transfer(TransferRequest transferRequest) {
-        log.info("transfer bu {} ile {} arasinda baslayr", transferRequest.getFromId(), transferRequest.getToId());
+        log.info("transferLog bu {} ile {} arasinda baslayr", transferRequest.getFromId(), transferRequest.getToId());
         withdraw(transferRequest.getFromId(), transferRequest.getAmount());
-
         deposit(transferRequest.getToId(), transferRequest.getAmount());
-
+        transaction.transferLog(transferRequest);
 
         }
 
@@ -123,6 +126,8 @@ public class AccountImpl implements AccountService {
         AccountEntity accountEntity = accountRepository.findById(accountId).orElseThrow(() -> {
             log.error("Bu id: {} movcud deyil", accountId);
             return new NotFoundException("Bu id aid hesab tapilmadi");});
+
+
        return accountEntity.getBalance();
 
 

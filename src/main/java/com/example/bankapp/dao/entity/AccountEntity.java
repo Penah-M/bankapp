@@ -33,10 +33,8 @@ public class AccountEntity {
     @Enumerated(EnumType.STRING)
     AccountStatus status;
 
-
     @CreationTimestamp
     LocalDateTime createdAt;
-
 
     @UpdateTimestamp
     LocalDateTime updatedAt;
