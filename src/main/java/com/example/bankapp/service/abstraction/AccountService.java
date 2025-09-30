@@ -3,6 +3,7 @@ package com.example.bankapp.service.abstraction;
 import com.example.bankapp.dto.request.AccountRequest;
 import com.example.bankapp.dto.request.TransferRequest;
 import com.example.bankapp.dto.response.AccountResponse;
+import com.example.bankapp.dto.response.AccountWithUserResponse;
 
 import java.math.BigDecimal;
 
@@ -16,7 +17,10 @@ public interface AccountService {
 
     void transfer(TransferRequest transferRequest);
 
-    BigDecimal show (Long accountId);
+    BigDecimal showBalance (Long accountId);
+
+    AccountWithUserResponse findById(Long accountId);
+
 
 
 }

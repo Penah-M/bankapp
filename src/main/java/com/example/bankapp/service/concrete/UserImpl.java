@@ -252,6 +252,25 @@ public class UserImpl implements UserService {
 
     }
 
+    @Override
+    public UserResponse finByUsr(Long userId) {
+        log.info("Istifadecinin Melumatlari hazirlanir: {}", userId);
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> {
+                    log.error("Id uyğun istifadeçi tapilmadi: {}", userId);
+
+                    return new NotFoundException("Id -e uygun melumat tapilmadi");
+                });
+        return  UserResponse.builder()
+                .email(userEntity.getEmail())
+                .name(userEntity.getName())
+                .surname(userEntity.getSurname())
+                .build();
+
+    }
+
+
+
 
 }
 

@@ -18,4 +18,5 @@ public interface UserService {
     void activeUser(Long id);
     List<UserResponse> getAllBlockStatus();
    void deleteAllUsers();
+    UserResponse finByUsr(Long userId);
 }

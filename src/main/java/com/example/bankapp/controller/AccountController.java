@@ -4,6 +4,7 @@ package com.example.bankapp.controller;
 import com.example.bankapp.dto.request.AccountRequest;
 import com.example.bankapp.dto.request.TransferRequest;
 import com.example.bankapp.dto.response.AccountResponse;
+import com.example.bankapp.dto.response.AccountWithUserResponse;
 import com.example.bankapp.service.abstraction.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,14 @@ public class AccountController {
 
     @GetMapping("{accountId}show")
     public BigDecimal show(@PathVariable Long accountId) {
-        return accountService.show(accountId);
+        return accountService.showBalance(accountId);
+    }
+
+
+    @GetMapping("{accountId}/findBy")
+    public AccountWithUserResponse findById(@PathVariable Long accountId) {
+        return accountService.findById(accountId);
+
     }
 
 

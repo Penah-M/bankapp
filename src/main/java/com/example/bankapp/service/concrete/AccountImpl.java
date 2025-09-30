@@ -7,6 +7,7 @@ import com.example.bankapp.dao.repository.UserRepository;
 import com.example.bankapp.dto.request.AccountRequest;
 import com.example.bankapp.dto.request.TransferRequest;
 import com.example.bankapp.dto.response.AccountResponse;
+import com.example.bankapp.dto.response.AccountWithUserResponse;
 import com.example.bankapp.enums.AccountStatus;
 import com.example.bankapp.exception.AlreadyExistsException;
 import com.example.bankapp.exception.InsufficientBalanceException;
@@ -28,6 +29,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class AccountImpl implements AccountService {
     AccountRepository accountRepository;
+
     UserRepository userRepository;
 
     TransactionImpl transaction;
@@ -122,16 +124,42 @@ public class AccountImpl implements AccountService {
         }
 
     @Override
-    public BigDecimal show(Long accountId) {
+    public BigDecimal showBalance(Long accountId) {
         AccountEntity accountEntity = accountRepository.findById(accountId).orElseThrow(() -> {
             log.error("Bu id: {} movcud deyil", accountId);
             return new NotFoundException("Bu id aid hesab tapilmadi");});
+        return accountEntity.getBalance();
+    }
+
+    @Override
+    public AccountWithUserResponse findById(Long accountId) {
+        log.info("{}  id-e sahib istifadecinin melumatlari hazirlanir",accountId);
+        AccountEntity accountEntity = accountRepository.findById(accountId)
+                .orElseThrow(() -> {
+                    log.error("Bu ID-li {} istifadeci yoxdur", accountId);
+                    return new NotFoundException("Bu idli istifadeci yoxdur");
+                });
+        log.info("{}  id-e sahib istifadecinin melumatlari gosterildi ",accountId);
+        UserEntity  user=userRepository.findById(accountEntity.getUserId()).orElseThrow(() -> {
+            log.error("Bu ID-li {} istifadeci yoxdur", accountId);
+            return new NotFoundException("Bu idli istifadeci yoxdur");
+        });
+
+        return AccountWithUserResponse.builder()
+                .balance(accountEntity.getBalance())
+                .name(user.getName())
+                .email(user.getEmail())
+                .surname(user.getSurname())
+                .createdAt(user.getCreatedAt())
+                .status(accountEntity.getStatus())
+                .id(accountEntity.getId())
+                .userId(user.getId())
+                .uptadeAt(user.getUpdatedAt())
+                .build();
+    }
 
 
-       return accountEntity.getBalance();
-
-
-}}
+}
 
 
 
